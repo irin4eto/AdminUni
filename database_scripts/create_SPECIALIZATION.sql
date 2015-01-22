@@ -22,4 +22,4 @@ CREATE TABLE `specializations` (
  CONSTRAINT `formcon` FOREIGN KEY (`FORM`) REFERENCES `edform` (`ID`),
  CONSTRAINT `formid_constr` FOREIGN KEY (`FORM`) REFERENCES `edform` (`ID`),
  CONSTRAINT `unitcon` FOREIGN KEY (`UNITID`) REFERENCES `basicunit` (`UNITID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

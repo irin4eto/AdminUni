@@ -32,4 +32,4 @@ CREATE TABLE `statusofstudent` (
  CONSTRAINT `formid_constr2` FOREIGN KEY (`FORM`) REFERENCES `edform` (`ID`),
  CONSTRAINT `specialization_constr` FOREIGN KEY (`SPECIALIZATIONID`) REFERENCES `specializations` (`SPECIALIZATIONID`),
  CONSTRAINT `unitid_constr2` FOREIGN KEY (`UNITID`) REFERENCES `basicunit` (`UNITID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

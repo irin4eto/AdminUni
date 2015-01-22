@@ -7,4 +7,4 @@ CREATE TABLE `basicunit` (
  PRIMARY KEY (`UNITID`),
  KEY `affiliate_constr` (`AFFILIATEID`),
  CONSTRAINT `affiliate_constr` FOREIGN KEY (`AFFILIATEID`) REFERENCES `affiliate` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
