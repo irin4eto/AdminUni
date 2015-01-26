@@ -6,23 +6,17 @@
         <link rel="stylesheet" type="text/css" href="/AdminUni/css/reset.css">
         <link rel="stylesheet" type="text/css" href="/AdminUni/css/structure.css">
     </head>
-
     <body>
-
-
         <?php
         include('config_database.php');
         include('words_bg.php');
-        
         $conn = mysql_connect($localhost, $user, $pass);
         mysql_select_db($db, $conn);
         $tbl_name = "USERS"; // Table name
-
         if (isset($_POST['submit'])) {
-// username and password sent from form 
+// username and password sent from form
             $member_username = $_POST['member_username'];
             $password = $_POST['password'];
-
 // To protect MySQL injection (more detail about MySQL injection)
             $member_username = stripslashes($member_username);
             $password = stripslashes($password);
@@ -32,8 +26,8 @@
             $result = mysql_query($sql);
             mysql_close($conn);
 // If result matched $myusername and $mypassword, table row must be 1 row
-            if (mysql_num_rows($result)!=0) {
-                // Register $myusername, $mypassword and redirect to file "login_success.php"
+            if (mysql_num_rows($result) != 0) {
+// Register $myusername, $mypassword and redirect to file "login_success.php"
                 $_SESSION['member_username'] = $_POST['member_username'];
                 $_SESSION['password'] = $_POST['password'];
                 session_start();
@@ -45,18 +39,15 @@
             }
         }
         ?>
-
         <form class="box login" name="form" method="post" action="">
             <fieldset class="boxBody">
-                <label><?php echo $password_text?></label>
+                <label><?php echo $password_text ?></label>
                 <input type="text" tabindex="1" name="member_username" required>
-                <label><?php echo $password_text?></label>
+                <label><?php echo $password_text ?></label>
                 <input type="password" tabindex="2" name="password" required>
             </fieldset>
             <footer>
                 <input type="submit" class="btnLogin" name="submit" id="submit" value="Login" tabindex="1">
             </footer>
         </form>
-
     </body>
-</html>

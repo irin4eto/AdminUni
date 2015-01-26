@@ -69,10 +69,9 @@ body{
 .box footer
 {
     background:#eff4f6;
-    border-top:1px solid #fff;
     padding:22px 26px;
     overflow:hidden;
-	height:32px;
+	
 }
 .box label
 {

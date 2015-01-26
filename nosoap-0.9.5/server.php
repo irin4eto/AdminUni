@@ -4,20 +4,17 @@ if (!session_start()) {
  header("Location: unauthorized_error.php");
 } 
 include('/../config_database.php');
-
-$conn = mysql_connect($localhost, $user, $pass);
-mysql_select_db($db, $conn);
+include('/../words_bg.php');
 
 function validate_university($post_data) {
-    include('/../words_bg.php');
 
     $year = $post_data['year'];
-    if (empty($year) || !is_int((int)$year) || strlen(strval($year)) != 4) {
+    if (empty($year) || !is_int($year) || strlen(string($year)) != 4) {
         return sprintf($message_error_text, $year_text);
     }
 
     $period = $post_data['period'];
-    if (empty($period) || !is_int((int)$period) || strlen(strval($period)) != 1) {
+    if (empty($period) || !is_int($period) || strlen(string($period)) != 1) {
         return sprintf($message_error_text, $period_text);
     }
 
@@ -32,27 +29,27 @@ function validate_university($post_data) {
     }
 
     $type_art17 = $post_data['type_art17'];
-    if (empty($type_art17) || strlen(strval($type_art17)) != 1) {
+    if (empty($type_art17) || !is_int($type_art17) || strlen(string($type_art17)) != 2) {
         return sprintf($message_error_text, $type_art17_text);
     }
 
     $type_art11 = $post_data['type_art11'];
-    if (empty($type_art11) || strlen(strval($type_art17)) != 1) {
+    if (empty($type_art11) || !is_int($type_art11) || strlen(string($type_art17)) != 1) {
         return sprintf($message_error_text, $type_art11_text);
     }
 
     $financer = $post_data['financer'];
-    if (empty($financer) || strlen(strval($type_art17)) > 2) {
+    if (empty($financer) || !is_int($financer) || strlen(string($type_art17)) > 2) {
         return sprintf($message_error_text, $financer_text);
     }
 
     $locationid = $post_data['locationid'];
-    if (empty($locationid) || strlen(strval($type_art17)) > 6) {
+    if (empty($locationid) || !is_int($locationid) || strlen(string($type_art17)) > 6) {
         return sprintf($message_error_text, $locationid_text);
     }
 
     $postcode = $post_data['postcode'];
-    if (empty($postcode) || !is_int((int)$postcode) || strlen(strval($type_art17)) > 4) {
+    if (empty($postcode) || !is_int($postcode) || strlen(string($type_art17)) > 4) {
         return sprintf($message_error_text, $postcode_text);
     }
 
@@ -62,38 +59,37 @@ function validate_university($post_data) {
     }
 
     $phonenumber1 = $post_data['phonenumber1'];
-    if (empty($phonenumber1) || !is_int((int)$phonenumber1) || strlen(strval($phonenumber1)) > 15) {
-        return sprintf($message_error_text, $phone_number1_text);
+    if (empty($phonenumber1) || !is_numeric($phonenumber1) || strlen(string($phonenumber1)) > 15) {
+        return sprintf($message_error_text, $phonenumber1_text);
     }
 
     $phonenumber2 = $post_data['phonenumber2'];
-    if (!empty($phonenumber2) && (!is_int((int)$phonenumber2) || strlen(strval($phonenumber2)) > 15)) {
-        return sprintf($message_error_text, $phone_number2_text);
+    if (!empty($phonenumber2) && (!is_numeric($phonenumber2) || strlen(string($phonenumber2)) > 15)) {
+        return sprintf($message_error_text, $phonenumber2_text);
     }
 
     $phonenumber3 = $post_data['phonenumber3'];
-    if (!empty($phonenumber3) && (!is_int((int)$phonenumber3) || strlen(strval($phonenumber3)) > 15)) {
-        return sprintf($message_error_text, $phone_number3_text);
+    if (!empty($phonenumber3) && (!is_numeric($phonenumber3) || strlen(string($phonenumber3)) > 15)) {
+        return sprintf($message_error_text, $phonenumber3_text);
     }
 
     $phonenumber4 = $post_data['phonenumber4'];
-    if (!empty($phonenumber4) && (!is_int((int)$phonenumber4) || strlen(strval($phonenumber4)) > 15)) {
-        return sprintf($message_error_text, $phone_number4_text);
+    if (!empty($phonenumber4) && (!is_numeric($phonenumber4) || strlen(string($phonenumber4)) > 15)) {
+        return sprintf($message_error_text, $phonenumber4_text);
     }
 
     $phonenumber5 = $post_data['phonenumber5'];
-    if (!empty($phonenumber5) && (!is_int((int)$phonenumber5) || strlen(strval($phonenumber5)) > 15)) {
-        return sprintf($message_error_text, $phone_number5_text);
+    if (!empty($phonenumber5) && (!is_numeric($phonenumber5) || strlen(string($phonenumber5)) > 15)) {
+        return sprintf($message_error_text, $phonenumber5_text);
     }
 
     $fax = $post_data['fax'];
-    if (empty($fax) || !is_numeric($fax) || strlen(strval($fax)) > 15) {
+    if (empty($fax) || !is_numeric($fax) || strlen(string($fax)) > 15) {
         return sprintf($message_error_text, $fax_text);
     }
 
     $email = $post_data['email'];
-    if (empty($email) || trim($email) == '' || !is_string($email) || strlen($email) > 50 || 
-            !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (empty($email) || trim($email) == '' || !is_string($email) || strlen($email) > 50) {
         return sprintf($message_error_text, $email_text);
     }
 
@@ -108,7 +104,7 @@ function validate_university($post_data) {
     }
 
     $year_establish = $post_data['year_establish'];
-    if (empty($year_establish) || !is_int((int)$year_establish) || strlen(strval($year_establish)) != 4) {
+    if (empty($year_establish) || !is_int($year_establish) || strlen(string($year_establish)) != 4) {
         return sprintf($message_error_text, $year_establish_text);
     }
 
@@ -116,29 +112,18 @@ function validate_university($post_data) {
 }
 
 function insert_university($post_data) {
-    global $conn;
-    
     $sql = "INSERT INTO UNIVERSITY(`YEAR`, `PERIOD`, `FULLNAME`, `SHORTNAME`, 
                                    `TYPEART17`, `TYPEART11`, `FINANCER`, `LOCATIONID`,
                                    `POSTCODE`, `ADDRESS`, `PHONENUMBER1`, `PHONENUMBER2`,
                                    `PHONENUMBER3`, `PHONENUMBER4`, `PHONENUMBER5`, `FAX`, 
-                                   `EMAIL`, `SITE`, `BULSTATNUMBER`, `YEARESTABLISH`)
-              VALUES ('".$post_data['year']."', '".$post_data['period']."', '".$post_data['full_name']."', '"
-                        .$post_data['short_name']."', '".$post_data['type_art17']."', '".$post_data['type_art11']."', '" 
-                        .$post_data['financer']."', '".$post_data['locationid']."', '".$post_data['postcode']."', '"
-                        .$post_data['address']."', '".$post_data['phonenumber1']."', '".$post_data['phonenumber2']."', '"
-                        .$post_data['phonenumber3']."', '".$post_data['phonenumber4']."', '".$post_data['phonenumber5']."', '"
-                        .$post_data['fax']."', '".$post_data['email']."', '".$post_data['site']."', '"
-                        .$post_data['bulstat']."', '".$post_data['year_establish']."')";
-    mysql_query($sql, $conn);
-    if(!mysql_errno()) {
-        mysql_query("COMMIT");
-        return TRUE;
-    } else {
-        //echo(mysql_error());
-        return FALSE;
-    }
-    mysql_close($conn);
+                                   `EMAIL`, `SITE`, `BULSTATNUMBER`, `YEARESTABLISH`, `IUD`)
+              VALUES ('".$_POST['year']."', '".$_POST['period']."', '".$_POST['full_name']."', '"
+                        .$_POST['short_name']."', '".$_POST['type_art17']."', '".$_POST['type_art11']."', '" 
+                        .$_POST['financer']."', '".$_POST['locationid']."', '".$_POST['ItemNumber']."', '"
+                        .$_POST['ItemNumber']."', '".$_POST['ItemNumber']."', '".$_POST['ItemNumber']."', '"
+                        .$_POST['ItemNumber']."', '".$_POST['ItemNumber']."', '".$_POST['ItemNumber']."', '"
+                        .$_POST['ItemNumber']."', '".$_POST['ItemNumber']."', '".$_POST['ItemNumber']."', '"
+                        .$_POST['ItemNumber']."', '".$_POST['ItemNumber']."')";
 }
 
 function select_code_budged_from() {
@@ -172,24 +157,6 @@ function select_school_type_znp() {
             'SCHOOLTYPENAME' => $row['SCHOOLTYPENAME']));
     }
     return $result;
-    
-}
-
-function select_locations() {
-    $sql = "SELECT EKATTEID, EKATTENAME FROM TEKATTE";
-    $sql_result = mysql_query($sql) or die(mysql_error());
-    $result = array();
-    while ($row = mysql_fetch_array($sql_result)) {
-        array_push($result, array('EKATTEID' =>  $row['EKATTEID'], 
-            'EKATTENAME' => $row['EKATTENAME']));
-    }
-    return $result;
-    
-}
-
-function close_conn() {
-    global $conn;
-    mysql_close($conn);
 }
 
 $server = new SoapServer(null, array(
@@ -200,6 +167,6 @@ $server->addFunction("insert_university");
 $server->addFunction("select_code_budged_from");
 $server->addFunction("select_code_basic_school_type");
 $server->addFunction("select_school_type_znp");
-#$server->handle();
+$server->handle();
 
 ?>
